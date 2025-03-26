@@ -35,6 +35,14 @@ public class MainController {
         return person;
     }
 
+    @DeleteMapping("/del/{key}")
+    public ResponseEntity<String> delPerson(@PathVariable("key") String key) {
+        System.out.println("Going to delPerson : "+ key);
+        long Long = hashOperations.delete("Person", key);
+        System.out.println("Person deleted successfully");
+        return ResponseEntity.ok("Person deleted successfully:"+Long);
+    }
+
     @GetMapping("/")
     public Map<String, Person> getPersons() {
         System.out.println("Going to get persons");
@@ -47,10 +55,9 @@ public class MainController {
         System.out.println("Going to save person : " + person);
         hashOperations.put("Person", person.getId(), person);
 
-
-        redisTemplate.expire("Person",
-                10,
-                TimeUnit.MINUTES);
+//        redisTemplate.expire("Person",
+//                1,
+//                TimeUnit.MINUTES);
         return new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
     }
 
